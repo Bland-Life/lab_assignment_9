@@ -78,13 +78,21 @@ void printRecords(struct RecordType pData[], int dataSz)
 // skip the indices which are free
 // the output will be in the format:
 // index x -> id, name, order -> id, name, order ....
-void displayRecordsInHash(struct HashType *pHashArray, int hashSz)
+void displayRecordsInHash(struct HashType *pHashArray[], int hashSz)
 {
 	int i;
 
 	for (i=0;i<hashSz;++i)
 	{
-
+		if (pHashArray[i] != NULL) {
+			printf("index %d -> ", i);
+			struct HashType* temp = pHashArray[i];
+			while (temp != NULL) {
+				printf("%d, %c, %d -> ", temp->record->id, temp->record->name, temp->record->order);
+				temp = temp->next;
+			}
+			printf("\n");
+		}
 	}
 }
 
