@@ -114,7 +114,7 @@ int main(void)
 		int record_index = hash(pRecords[i].id);
 
 		// If there is no value stored at the current index, add a HashType and point it towards the record
-		if (table[record_index] == 0) {
+		if (table[record_index] == NULL) {
 			table[record_index] = (struct HashType*) malloc(sizeof(struct HashType));
 			if (table[record_index] == NULL) {
 				return -1;
@@ -135,8 +135,8 @@ int main(void)
 				return -1;
 			}
 			temp = temp->next;
-			temp->next = NULL;
 			temp->record = &pRecords[i];
+			temp->next = NULL; 
 		}
 	}
 
