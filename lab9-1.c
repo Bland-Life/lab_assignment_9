@@ -104,9 +104,16 @@ int main(void)
 	recordSz = parseData("input.txt", &pRecords);
 	printRecords(pRecords, recordSz);
 	// Your hash implementation
+
+	// Creates and initializes the hash table
 	struct HashType* table[TABLE_SIZE] = { NULL };
+
+
 	for(int i = 0; i < recordSz; i++) {
+
 		int record_index = hash(pRecords[i].id);
+
+		// If there is no value stored at the current index, add a HashType and point it towards the record
 		if (table[record_index] == 0) {
 			table[record_index] = (struct HashType*) malloc(sizeof(struct HashType));
 			if (table[record_index] == NULL) {
@@ -115,16 +122,23 @@ int main(void)
 			table[record_index]->record = &pRecords[i];
 			table[record_index]->next = NULL;
 		}
+
+		// Otherwise, if there is a collision, insert at the end of the linked list of HashTypes our new
+		// HashType and store the pointer to the record there.
 		else {
 			struct HashType* temp = table[record_index];
 			while (temp->next != NULL) {
 				temp = temp->next;
 			}
 			temp->next = (struct HashType*) malloc(sizeof(struct HashType));
+			if (temp->next == NULL) {
+				return -1;
+			}
 			temp = temp->next;
 			temp->next = NULL;
 			temp->record = &pRecords[i];
 		}
 	}
+
 	displayRecordsInHash(table, TABLE_SIZE);
 }
